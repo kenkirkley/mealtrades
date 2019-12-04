@@ -30,4 +30,9 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
+// NESTED ROUTE
+
+// POST /tour/234fad4/reviews
+// GET /tour/234fad4/reviews/0932409sdaf
+
 module.exports = router;

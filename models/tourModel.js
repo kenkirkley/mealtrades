@@ -135,6 +135,14 @@ tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
 
+// virtual populate; USE THIS WHEN TRYING TO POPULATE A FIELD THAT CAN GROW INDEFINETLY, I.E. A FRIENDS LIST OR SOMETHING. YOU DO NOT WANT TO PERSIST THAT IN A DATABASE, AND POPULATE IT, AS IT WOULD BE TOO TAXING.
+// foreign field corresponds to the local field
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
+});
+
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre('save', function(next) {
   // this points to current document
