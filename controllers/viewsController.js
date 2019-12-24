@@ -12,7 +12,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
   // 3. render template
 
   res.status(200).render('tour', {
-    title: tour.eventNames,
+    title: `${tour.name} tour`,
     tour
   });
 });
@@ -29,3 +29,9 @@ exports.getOverview = catchAsync(async (req, res, next) => {
     tours
   });
 });
+
+exports.getLoginForm = (req, res, next) => {
+  res.status(200).render('login', {
+    title: 'Log into your account'
+  });
+};

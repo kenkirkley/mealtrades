@@ -1,6 +1,12 @@
 extends base
 include _reviewCard
 
+block append head
+    //- Defer will make the script run only after the dom has loaded
+    script(src='/js/mapbox.js' defer)
+    script(src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js')
+    link(rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css')
+
 
 mixin overviewBox(label, text, icon)
     .overview-box__detail
@@ -65,7 +71,9 @@ block content
                 img.picture-box__img(src=`/img/tours/${img}`, alt=`${tour.name} ${i + 1}`,  class=`picture-box__img--${i + 1}`)
 
     section.section-map
-        #map
+        //- Instead of making a call to the api to get the location data for the map, 
+        //- you can expose it in the html using a data attribute, then read it with javascript
+        #map(data-locations=`${JSON.stringify(tour.locations)}`)
 
     section.section-reviews
         .reviews
