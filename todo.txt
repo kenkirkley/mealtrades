@@ -1,0 +1,18 @@
+TODO:
+
+Make a signup page and make it work. Things to check:
+If user is created successfuly
+If Password is encoded successfuly
+If Email is sent
+If the link in the email works
+If cookie is sent
+
+Make a forgot password link
+Forgot Password page needs a input for the email
+check if email is sent and if link in email works
+Link in email needs to take you to a page where you can input a new password. May need to make a new route that takes a password reset token as 
+/:id
+needs two input boxes: new password, and password confirm.
+After that it should log you in
+
+When user logs out, link should go to home page.
