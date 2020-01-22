@@ -1,15 +1,18 @@
 const express = require('express');
 const offerController = require('./../controllers/offerController');
-// const authController = require('./../controllers/authController');
+const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
-router.route('/').post(offerController.createOffer);
+router
+  .route('/')
+  .post(authController.protect, offerController.createOffer)
+  .get(offerController.getAllOffers);
 
 router
   .route('/:id')
   .get(offerController.getOffer)
-  .patch(offerController.updateOffer)
-  .delete(offerController.deleteOffer);
+  .patch(authController.protect, offerController.updateOffer)
+  .delete(authController.protect, offerController.deleteOffer);
 
 module.exports = router;

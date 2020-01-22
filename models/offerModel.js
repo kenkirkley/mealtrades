@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
 const validator = require('validator');
 const User = require('./userModel');
-const userSchema = require('./userModel').schema;
 
 const offerSchema = new mongoose.Schema({
   creator: { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -13,7 +11,7 @@ const offerSchema = new mongoose.Schema({
   // GEO JSON or just name? for now, name.
   location: {
     type: String,
-    require: true
+    required: true
   },
   time: {
     type: Date,
@@ -32,6 +30,20 @@ offerSchema.pre('save', async function(next) {
   this.creator = creator;
   next();
 });
+
+// This is to store dates as strings and not date objects. Instead, dates will be stored as Date objects and converted to string using toLocaleDateString on the presentation layer.
+// offerSchema.pre('save', function(next) {
+//   const options = {
+//     weekday: 'long',
+//     day: 'numeric',
+//     hour: 'numeric',
+//     minute: 'numeric'
+//   };
+//   const date = new Date(this.time);
+//   this.time = date.toLocaleDateString(undefined, options);
+//   next();
+// });
+// TIMEZONES: LOOK IN TO THIS: new Date().toLocaleString("en-US", {timeZone: "America/New_York"})
 
 const Offer = mongoose.model('Offer', offerSchema);
 

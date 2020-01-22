@@ -37,6 +37,7 @@ exports.createOne = Model =>
     // newTour.save();
 
     const doc = await Model.create(req.body);
+    console.log(doc);
 
     res.status(201).json({
       status: 'Success',

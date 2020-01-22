@@ -16,3 +16,16 @@ needs two input boxes: new password, and password confirm.
 After that it should log you in
 
 When user logs out, link should go to home page.
+
+FOR THE PROJECT:
+CREATE A NEW ROUTE FOR POST CONSUMPTION:
+1. Protect the route so that only users can consume
+2. Send confirmation request to creator
+3. Send notice to user of result
+4. Connect users
+
+CREATE OFFER:
+2. Store current user in creator field upon POST
+
+UPDATE/DELETE OFFER:
+1. Check if creator is same as one on offer
