@@ -2,32 +2,43 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const User = require('./userModel');
 
-const offerSchema = new mongoose.Schema({
-  creator: { type: mongoose.Schema.ObjectId, ref: 'User' },
-  description: {
-    type: String,
-    trim: true
+const offerSchema = new mongoose.Schema(
+  {
+    creator: Array,
+    description: {
+      type: String,
+      trim: true
+    },
+    // GEO JSON or just name? for now, name.
+    location: {
+      type: String,
+      required: true
+    },
+    time: {
+      type: Date,
+      required: true
+    }
   },
-  // GEO JSON or just name? for now, name.
-  location: {
-    type: String,
-    required: true
-  },
-  time: {
-    type: Date,
-    required: true
-  }
-});
+  { versionKey: false, autoIndex: false }
+);
 // EMBEDDING CREATOR
 /////// CODE REVIEW //////////////////
 // RIGHT NOW THIS USES REFERENCING. EVEN THOUGH IT IS A ONE TO ONE
 
 // ALSO, CHECK IF THE USER INFO UPDATES CORRECTLY
+// offerSchema.pre('save', async function(next) {
+//   const creator = await User.findById(this.creator).select(
+//     '-__v -passwordChangedAt'
+//   );
+//   this.creator = creator;
+//   next();
+// });
+
 offerSchema.pre('save', async function(next) {
-  const creator = await User.findById(this.creator).select(
-    '-__v -passwordChangedAt'
+  const creatorPromise = this.creator.map(
+    async id => await User.findById(id, 'name _id photo')
   );
-  this.creator = creator;
+  this.creator = await Promise.all(creatorPromise);
   next();
 });
 

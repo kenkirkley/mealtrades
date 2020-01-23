@@ -19,13 +19,40 @@ When user logs out, link should go to home page.
 
 FOR THE PROJECT:
 CREATE A NEW ROUTE FOR POST CONSUMPTION:
-1. Protect the route so that only users can consume
 2. Send confirmation request to creator
 3. Send notice to user of result
 4. Connect users
-
-CREATE OFFER:
-2. Store current user in creator field upon POST
+Things to think about here:
+See if instead of clicking a confirmation link, the user can send a response message to confirm/deny. (THIS IS POSSIBLE READ NEXMO DOCS) Server will need to be prepared to recieve and parse such a message and respond by sending the consumer a message. If not, confirmation link and route will suffice?
 
 UPDATE/DELETE OFFER:
 1. Check if creator is same as one on offer
+(Decode the jwt in req.cookies.jwt or the bearer token (see authController.protect) and compare to offer.creator)
+
+
+--------------------------------------------
+
+ON SINGLE OFFER PAGE:
+Will need to use get offer route. Do you need email in query? if not change in popOptions
+
+for texts:
+when the user enters their phone number: use
+replace(/\D/g, '') : takes out non numeric chars
+
+server side:
+
+when storing number, if in US add 1 infront of number
+
+nexmo.message.sendSms('12011785085', 18322170123, textMessage, {type: 'unicode}, (err, responseData) => {
+    if(err) {
+        console.log(err);
+    }
+    else{
+        console.dir(responseData);
+    }
+} )
+
+on free trial, whitelist numbers
+dashboard.nexmo.com/test-numbers
+
+look into conversations on nexmo for handling user communication.

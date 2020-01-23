@@ -1,3 +1,5 @@
+const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError.js');
 const APIFeatures = require('./../utils/apiFeatures');
@@ -31,10 +33,29 @@ exports.updateOne = Model =>
     });
   });
 
-exports.createOne = Model =>
+exports.createOne = (Model, createOptions) =>
   catchAsync(async (req, res, next) => {
     // const newTour = new Tour({});
     // newTour.save();
+
+    if (createOptions) {
+      if (createOptions.attachCreator) {
+        let token;
+        if (
+          req.headers.authorization &&
+          req.headers.authorization.startsWith('Bearer')
+        ) {
+          token = req.headers.authorization.split(' ')[1];
+        } else if (req.cookies.jwt) {
+          token = req.cookies.jwt;
+        }
+        const decoded = await promisify(jwt.verify)(
+          token,
+          process.env.JWT_SECRET
+        );
+        req.body.creator = decoded.id;
+      }
+    }
 
     const doc = await Model.create(req.body);
     console.log(doc);

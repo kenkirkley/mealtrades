@@ -1,4 +1,4 @@
-const Tour = require('../models/tourModel');
+const Offer = require('../models/offerModel');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -24,14 +24,14 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
 exports.getOverview = catchAsync(async (req, res, next) => {
   // 1. Get tour data from collection
-  const tours = await Tour.find();
+  const offers = await Offer.find();
   // 2) Build template
 
   // 3) Render that template using data
 
   res.status(200).render('overview', {
-    title: 'All Tours',
-    tours
+    title: 'All Offers',
+    offers
   });
 });
 

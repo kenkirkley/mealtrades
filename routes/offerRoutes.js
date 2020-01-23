@@ -15,4 +15,7 @@ router
   .patch(authController.protect, offerController.updateOffer)
   .delete(authController.protect, offerController.deleteOffer);
 
+router
+  .route('/:id/consume')
+  .get(authController.protect, offerController.consumeOffer);
 module.exports = router;
