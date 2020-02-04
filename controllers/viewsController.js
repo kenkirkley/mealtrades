@@ -22,6 +22,12 @@ exports.getTour = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getHome = catchAsync(async (req, res, next) => {
+  res.status(200).render('home', {
+    title: 'Homepage'
+  });
+});
+
 exports.getOverview = catchAsync(async (req, res, next) => {
   // 1. Get tour data from collection
   const offers = await Offer.find();
@@ -38,6 +44,31 @@ exports.getOverview = catchAsync(async (req, res, next) => {
 exports.getLoginForm = (req, res, next) => {
   res.status(200).render('login', {
     title: 'Log into your account'
+  });
+};
+
+exports.signup = (req, res, next) => {
+  res.status(200).render('signup', {
+    title: 'Sign up for a new account'
+  });
+};
+
+exports.forgotPassword = (req, res, next) => {
+  res.status(200).render('forgotPassword', {
+    title: 'Forgot your Password?'
+  });
+};
+exports.emailSent = (req, res, next) => {
+  res.status(200).render('emailSent', {
+    title: 'Email Sent'
+  });
+};
+
+exports.resetPassword = (req, res, next) => {
+  console.log(req.params.token);
+  res.status(200).render('resetPassword', {
+    title: 'Reset your Password',
+    token: req.params.token
   });
 };
 

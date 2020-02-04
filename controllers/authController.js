@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./../models/userModel');
 const AppError = require('./../utils/appError');
 const Email = require('./../utils/email');
+const decode = require('./../utils/decode');
 
 const catchAsync = require('./../utils/catchAsync');
 
@@ -21,12 +22,15 @@ const createSendToken = (user, statusCode, res) => {
     ),
     httpOnly: true
   };
+  // When testing locally, this will not work, as locally there is no https.
   if (process.env.NODE_ENV === 'production') {
     cookieOptions.secure = true;
   }
   res.cookie('jwt', token, cookieOptions);
 
   user.password = undefined;
+
+  console.log(token);
 
   res.status(statusCode).json({
     status: 'success',
@@ -73,25 +77,11 @@ exports.logout = (req, res) => {
 
 exports.protect = catchAsync(async (req, res, next) => {
   // 1. Get token and check if it exists
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
-  }
+
+  const token = await decode(req, next);
   console.log(token);
-  if (!token) {
-    return next(
-      new AppError('You are not logged in. Please log in to get access', 401)
-    );
-  }
-  // 2. Verify token
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   // 3. Check if user still exists
-  const freshUser = await User.findById(decoded.id);
+  const freshUser = await User.findById(token.id);
   if (!freshUser) {
     return next(
       new AppError('The user belonging to this token no longer exists', 401)
@@ -99,7 +89,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // 4. Check if user changed password after the token was issued
-  if (freshUser.changedPasswordAfter(decoded.iat)) {
+  if (freshUser.changedPasswordAfter(token.iat)) {
     return next(
       new AppError('User recently changed password! Please log in again')
     );
@@ -112,6 +102,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 // Only for rendered pages, no errors
+// Checks if user is logged in so it can give the user info to the pug templates
 exports.isLoggedIn = async (req, res, next) => {
   // 1. Get token and check if it exists
   if (req.cookies.jwt) {
@@ -169,7 +160,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   try {
     const resetURL = `${req.protocol}://${req.get(
       'host'
-    )}/api/v1/users/resetPassword/${resetToken}`;
+    )}/resetPassword/${resetToken}`;
 
     await new Email(user, resetURL).sendPasswordReset();
 

@@ -1,0 +1,23 @@
+input[type='text']:focus,
+input[type='password']:focus,
+input[type='email']:focus,
+select:focus,
+textarea:focus {
+  border-color: #ddd;
+  box-shadow: none;
+}
+
+/* Login Pages */
+.form__group {
+  margin: 1em 0;
+}
+
+.form__group button {
+  margin: 2em 0;
+}
+
+.email__sent p {
+  font-size: 20px;
+}
+
+/*  */

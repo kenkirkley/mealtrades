@@ -1,0 +1,24 @@
+
+section#footer
+    .inner
+        header
+            h2 Send us your feedback/opinions
+        form(method='post' action='#')
+            .field.half.first
+                label(for='name') Name
+                input#name(type='text' name='name')
+            .field.half
+                label(for='email') Email
+                input#email(type='text' name='email')
+            .field
+                label(for='message') Message
+                textarea#message(name='message' rows='6')
+            ul.actions
+                li
+                input.alt(type='submit' value='Send Message')
+        .copyright
+            | &copy; Untitled Design: 
+        a(href='https://templated.co/') TEMPLATED
+        | .
+        |           Images 
+        a(href='https://unsplash.com/') Unsplash

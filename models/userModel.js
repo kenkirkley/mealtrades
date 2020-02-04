@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'guide', 'lead-guide', 'admin'],
     default: 'user'
   },
+  phoneNumber: {
+    type: String
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
@@ -60,6 +63,12 @@ userSchema.pre('save', async function(next) {
   // Delete password confirm
   this.passwordConfirm = undefined;
   next();
+});
+
+userSchema.pre('save', async function(next) {
+  if (this.isModified('phoneNumber')) {
+    this.phoneNumber = this.phoneNumber.replace(/\D/g, '');
+  }
 });
 
 userSchema.pre('save', function(next) {

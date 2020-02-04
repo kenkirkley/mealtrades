@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError.js');
 const APIFeatures = require('./../utils/apiFeatures');
+const decode = require('./../utils/decode');
 
 exports.deleteOne = Model =>
   catchAsync(async (req, res, next) => {
@@ -40,20 +41,8 @@ exports.createOne = (Model, createOptions) =>
 
     if (createOptions) {
       if (createOptions.attachCreator) {
-        let token;
-        if (
-          req.headers.authorization &&
-          req.headers.authorization.startsWith('Bearer')
-        ) {
-          token = req.headers.authorization.split(' ')[1];
-        } else if (req.cookies.jwt) {
-          token = req.cookies.jwt;
-        }
-        const decoded = await promisify(jwt.verify)(
-          token,
-          process.env.JWT_SECRET
-        );
-        req.body.creator = decoded.id;
+        const token = await decode(req, next);
+        req.body.creator = token.id;
       }
     }
 

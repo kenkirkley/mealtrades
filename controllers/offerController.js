@@ -1,9 +1,9 @@
 const Offer = require('../models/offerModel');
 const User = require('../models/userModel');
+const messageController = require('./messageController');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError.js');
 const factory = require('./handlerFactory');
-const Nexmo = require('nexmo');
 
 exports.getAllOffers = factory.getAll(Offer);
 exports.getOffer = factory.getOne(Offer);
@@ -29,29 +29,21 @@ exports.consumeOffer = catchAsync(async (req, res, next) => {
     return next(new AppError('No document found with that ID', 404));
   }
   // 3) Send confirmation link to creator
-  const nexmo = new Nexmo({
-    apiKey: '975a39c3',
-    apiSecret: 'tt951SvmdYp2Pm94'
-  });
 
-  const from = process.env.NEXMO_VIRTUAL_NUMBER;
-  // number from creator document
-  const to = '18322170123';
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // Separate sending message into message creator
+  const to = creator.phoneNumber;
+
+  // Need to make a confirmation link with the offer and consumer as params. Create the link, then pass it to the send message function in message controller.
+  // ${req.protocol}://${req.get('host')}/offers/confirm/offer/:offerid/consumer/:consumer
+  // HERE INSTEAD :offerid and :consumer put the id and consumer user id in this link. Put this message in text. Also make this route.
+  // use doc to access the offer.
+
   // desired text message content
+  // text = Somebody has expressed interest in your offer! Click this link to see who it is and confirm/deny their request
   const text = 'test message dank.';
 
-  nexmo.message.sendSms(from, to, text, (err, responseData) => {
-    if (err) {
-      console.log(err);
-    } else {
-      if (responseData.messages[0]['status'] !== '0') {
-        console.log(
-          `Message failed with error: ${responseData.messages[0]['error-text']}`
-        );
-      }
-      console.log('Message sent successfully.');
-    }
-  });
+  await messageController.sendText(to, text);
 
   // 4) When creator clicks link, notify user of confirmation/deny. Need new route
   res.status(200).json({

@@ -1,40 +1,164 @@
+-------------------------------------------------
+Goals:
+1. Create Front end layouts for project
+2. Finish consumer/creator interactions through sms.
+
+Thoughts:
+
+Do we need any verfication for users at all? Verification adds quite a few hurdles and swamps of both legal and structrual nature. From what i've looked up so far, there is no way to get access to the complete school directory. Scraping the search function probably would not work either, as to get someone's info you need their name in the search bar. I dont think we can scrape this.
+
+So maybe we go the leafedin route. Just make it anonymous, maybe require a tamu specific email, and leave the masses to it. Have meal trade meetups or exchanges. People can leave their venmos, and say venmo someone to get them a meal trade for $5 dollars or something like that. Or just give them away for free by saying ima be here at a certain time. That kind of thing. I think the UIN/Student ID route is not feasible.
+
+For now just put the signup requirements on hold. Probably wont use them. Look in to how to verify a certain domain. Could use regular expressions.
+-------------------------------------------------
+-------------------------------------------------
+
+Remember to change the Nexmo Webhook to the current ngrok web link. Dont need to do this if we are not recieving messages.
+
+Ways to decrease cost:
+1. Use confirmation link instead of response text. This will allow you to have direct access to offer by putting offer id into the confirmation link parameter. Also saves one inbound sms message. (25%)
+2. Only send contact info to one party. This will save one outgoing message. Instead of sending both parties the numbers, only one party will get it. Or, have the contact info in the link?
+
+On offer creation, have an option to eat together or eat separately?
+Users need bios, as in confirmation link it will show some user info.
+
+See if you can redirect to the a&m portal for UIN authentication?? or just student authentication.
+
 TODO:
+-------------------------------------------------
 
+
+Front End:
+Status: In progress
+Todo: Create schematic of website to take inventory of all front end pages required. Handle errors in a way that is suitable for deployment. (404, etc)
+-------------------------------------------------
+COMPLETED:
+
+REVIEW:
+home
+footer
+header
+login
+forgotPassword
+emailSent
+resetPassword
+error
+
+
+
+
+NOT STARTED:
+
+------------------------------------------------
+------------------------------------------------
+
+Signup:
+Status: Basic 
+Todo: needs specific functionality
+-----------------------------------------------
 Make a signup page and make it work. Things to check:
-If user is created successfuly
-If Password is encoded successfuly
-If Email is sent
-If the link in the email works
-If cookie is sent
 
+1. It works, but:
+    When testing locally, the cookie will not be sent, as it can only be sent over https.
+
+2. Make the signup field specific to the project:
+ a. Need a field for UIN?
+ b. Need a photo of the front of the ID?
+ c. HOW TO VERIFY IF THE UIN IS VALID????
+ d. DO WE COMPARE WITH THE ONE ON THE ID?????
+ e. THIS PROCESS IS MANUAL AND REQUIRES VERIFICATION. ??????? HOW TO MAKE IT AUTOMATED??
+ DOES THE USER NEED TO WAIT FOR VERIFICATION?
+
+Do we need any verification at all?
+-------------------------------------------------
+-------------------------------------------------
+
+
+Forgot Password:
+Status: Mvp
+Todo: Make more front end designs for error states. Streamline user exp. by taking them to the appropriate pages.
+Make a page to send them to after they click the forgot password button.
+-------------------------------------------------
 Make a forgot password link
-Forgot Password page needs a input for the email
-check if email is sent and if link in email works
-Link in email needs to take you to a page where you can input a new password. May need to make a new route that takes a password reset token as 
-/:id
-needs two input boxes: new password, and password confirm.
-After that it should log you in
+Done, but:
+1. FIND A BETTER WAY TO GET THE TOKEN FROM THE URL TO THE AXIOS REQUEST. As of right now, the token is being passed to the pug template from the back end, then the token is attached to the button id, then that id is sent to the axios request. How to get the token straight from the url?????
+2. This will not log in immediately in testing, as testing locally is not done over https.
+3. Make pages for error states. If token is invalid or expired, send back to forgot password? or something. as of right now, there are only push notifications.
+-------------------------------------------------
+-------------------------------------------------
 
-When user logs out, link should go to home page.
 
-FOR THE PROJECT:
+Post Consumption:
+Status: In progress
+Todo:  Add consumer to offer when consumed. Create confirmation link with offer and consumer as params. Create link in consumeOffer. Will need to make a route for this. Page will have consumer info with confirm or deny buttons. Create confirmation link route.
+-------------------------------------------------
 CREATE A NEW ROUTE FOR POST CONSUMPTION:
 2. Send confirmation request to creator
 3. Send notice to user of result
-4. Connect users
-Things to think about here:
-See if instead of clicking a confirmation link, the user can send a response message to confirm/deny. (THIS IS POSSIBLE READ NEXMO DOCS) Server will need to be prepared to recieve and parse such a message and respond by sending the consumer a message. If not, confirmation link and route will suffice?
+4. Connect users (send respective contact info)
 
+Flow:
+1. Post consume request
+    a. Message sent to creator with confirmation link. Link will have consumer info with buttons to confirm or deny.(offerController.consumeOffer) 
+    b. Show on front end: A message has been sent to $CREATOR. You will be notified of their response shortly
+    c. Creator clicks button on link
+    d. Send appropriate message to consumer. (This happens on a new route!)
+    e. link two parties.
+
+
+ADD CONSUMER TO OFFER!!!!!
+1. When consumer consumes offer, send messages confirming. Consumer is added to offer.
+3. If there is a consumer on the offer, take the listed offer off of the site. if consumer, do not show on front end. 
+4. What happens if two consumers consume at the same time?
+    a. While there is a consumer on the offer, do not show the offer. Once the creator denies, take creator off of the offer. This will allow the offer to show back up on the front end. If the creator accepts, then there will still be a consumer on the offer, therefore it will not show up on the front end.
+
+
+TO TEST RECIEVING SMS:
+1. Install ngrok so that nexmo can detect the endpoint for recieving SMS
+2. configure your virtual number. Add the endpoint that you want the messages to be handled on.
+3. use code snippet provided on https://developer.nexmo.com/messaging/sms/code-snippets/receiving-an-sms. make a route that matches the endpoint on the virtual number, then make a controller function that handles what to do with that message.
+4. When recieving the message, send short acknowledgement reply, then send message to the person who consumed the offer saying whether or not they accepted. 
+a. Test the response. In message, say "Respond Yes to accept, or No to deny." use an if statement with the text of the message to see what they said. If neither, send a message that says only reply yes or no.
+b. If yes, set message contents to x. If no, set message contents to y.
+c. With these message contents, send message to the consumer with the appropriate response.
+
+
+d. (OPTIONAL). Turn to conversation mode and connect users. Any further replies will be sent back and forth between users. May need a new endpoint for this? or instead, separate the initial interaction into one function, and the subsequent interactions into another. Or, at this point, connect the users by exchanging the numbers? or emails. 
+
+This is the connection point between users.
+This will require more thought.
+-------------------------------------------------
+-------------------------------------------------
+
+
+Single Offer page
+Status: Api functional
+Todo: Create Front End for single offer. Must have consumer attach functionality on front end.
+-------------------------------------------------
+Review api functionality. Need to attach consumer to offer. Send consumer with axios request. Handle on backend. Remap it out so you understand
+-------------------------------------------------
+-------------------------------------------------
+
+
+Update/Delete offer
+Status: Almost Complete
+Todo: Needs validation
+-------------------------------------------------
 UPDATE/DELETE OFFER:
 1. Check if creator is same as one on offer
 (Decode the jwt in req.cookies.jwt or the bearer token (see authController.protect) and compare to offer.creator)
 
+KEEP AN EYE OUT ON NEW DECODE FUNCTION. TEST AUTHORIZARTION THOROUGHLY
 
---------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
-ON SINGLE OFFER PAGE:
-Will need to use get offer route. Do you need email in query? if not change in popOptions
+Phone Numbers:
+Status: Needs front end
+Todo: Needs a place to input on front end.
 
+BASIC TEXT DOCUMENTATION
+-------------------------------------------------
 for texts:
 when the user enters their phone number: use
 replace(/\D/g, '') : takes out non numeric chars
@@ -56,3 +180,5 @@ on free trial, whitelist numbers
 dashboard.nexmo.com/test-numbers
 
 look into conversations on nexmo for handling user communication.
+-------------------------------------------------
+-------------------------------------------------

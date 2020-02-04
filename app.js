@@ -14,11 +14,12 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const offerRouter = require('./routes/offerRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const messageRouter = require('./routes/messageRoutes');
 const cookieParser = require('cookie-parser');
 const app = express();
 
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views/mealtrades'));
 // serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -78,6 +79,7 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/offers', offerRouter);
+app.use('/api/v1/messages', messageRouter);
 
 // If this point is reached in the code, that means the url did not have a route.
 

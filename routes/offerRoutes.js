@@ -18,4 +18,5 @@ router
 router
   .route('/:id/consume')
   .get(authController.protect, offerController.consumeOffer);
+
 module.exports = router;

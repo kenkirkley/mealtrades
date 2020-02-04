@@ -5,18 +5,19 @@ const User = require('./userModel');
 const offerSchema = new mongoose.Schema(
   {
     creator: Array,
+    consumer: Array,
     description: {
       type: String,
-      trim: true
+      trim: true,
+      required: [true, 'Your offer needs a description.']
     },
     // GEO JSON or just name? for now, name.
     location: {
-      type: String,
-      required: true
+      type: String
     },
+
     time: {
-      type: Date,
-      required: true
+      type: Date
     }
   },
   { versionKey: false, autoIndex: false }
@@ -36,9 +37,16 @@ const offerSchema = new mongoose.Schema(
 
 offerSchema.pre('save', async function(next) {
   const creatorPromise = this.creator.map(
-    async id => await User.findById(id, 'name _id photo')
+    async id => await User.findById(id, 'name _id photo phoneNumber email')
   );
   this.creator = await Promise.all(creatorPromise);
+  if (this.consumer) {
+    const consumerPromise = this.consumer.map(
+      async id => await User.findById(id, 'name _id photo phoneNumber email')
+    );
+    this.consumer = await Promise.all(consumerPromise);
+  }
+
   next();
 });
 
