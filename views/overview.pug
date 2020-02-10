@@ -1,0 +1,33 @@
+extends base
+
+block content
+    main.main
+        .card-container
+            each offer in offers
+                .card
+                    .card__header
+                        //- .card__picture
+                        //-     .card__picture-overlay &nbsp;
+                        //-     img.card__picture-img(src=`/img/tours/${tour.imageCover}`, alt=`'${tour.name}'`)
+                        h3.heading-tertirary
+                            span= offer.location
+
+                    .card__details
+                        h4.card__sub-heading= `${offer.time.toLocaleString('en-US', {weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'})}`
+                        p.card__text= offer.description
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='/img/icons.svg#icon-map-pin')
+                            span= offer.location
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='/img/icons.svg#icon-calendar')
+                            span= offer.time.toLocaleString('en-US', {weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='/img/icons.svg#icon-user')
+                            span= `${offer.creator[0].name}`
+
+                    .card__footer
+                        a.btn.btn--green.btn--small(href=`#`) Details
+

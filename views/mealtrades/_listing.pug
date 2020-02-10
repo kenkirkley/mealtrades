@@ -1,0 +1,8 @@
+mixin listing(offer)
+    .wrapper
+        p.creator= offer.creator[0].name
+        p.location= offer.location
+        - let date = new Date(offer.time);
+        - date = date.toLocaleDateString("en-US", {weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})
+        p.time= date
+        p.description= offer.description

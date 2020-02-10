@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Natours | Homepage</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./../css/main.css" />
+    <link rel="stylesheet" href="./../css/mods.css" />
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lato:300,300i,700"
+    />
+    <link
+      href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <!-- HEADER-->
+    <header id="header">
+      <div class="inner">
+        <a class="logo" href="/home">Student based meal trade</a>
+        <nav id="nav">
+          <a href="/home">Home</a><a href="#">Generic</a
+          ><a href="#">Elements</a>
+        </nav>
+      </div>
+    </header>
+    <a class="navPanelToggle" href="#menu"><span class="fa fa-bars"></span></a>
+    <section id="banner">
+      <div class="inner">
+        <h1>
+          Meal Trades: <span>A way to get rid of your excess meal trade </span>
+        </h1>
+        <ul class="actions">
+          <li><a class="button alt" href="#">Learn More</a></li>
+        </ul>
+      </div>
+    </section>
+    <!-- One-->
+    <!-- need to make a card template for a mixin -->
+    <section id="one">
+      <div class="inner">
+        <div class="offers">
+          <div class="listing-container">
+            <div class="creator-info flex-centered-mobile">
+              <!-- add a part of the bio that is like a tag line, like a short tinder bio, then show it under the creator in the offer? -->
+              <div class="img-wrapper">
+                <img class="avatar" src="../img/users/user-3_3_56.jpg" alt="" />
+              </div>
+              <div class="name-wrapper">
+                <p class="name">Sophie Louise Hart</p>
+                <span class="tagline">Freshman</span>
+              </div>
+            </div>
+            <div class="description flex-centered">
+              <p class="description-text">
+                "Giving away a meal trade at the Commons at 7"
+              </p>
+            </div>
+            <div class="date-location flex-centered">
+              <p>
+                Commons Dining Hall Monday, Mar 30, 8:00 AM
+                <!-- <button class="more-info">More Info</button> -->
+              </p>
+            </div>
+            <div class="setting"></div>
+            <div class="more-info flex-centered">
+              <i class="fa fa-caret-right display-desktop"></i>
+              <i class="fa fa-caret-down display-mobile"></i>
+            </div>
+            <!-- make this smaller, or make it not a button but changes over hover -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer-->
+    <section id="footer">
+      <div class="inner">
+        <header><h2>Send us your feedback/opinions</h2></header>
+        <form method="post" action="#">
+          <div class="field half first">
+            <label for="name">Name</label
+            ><input id="name" type="text" name="name" />
+          </div>
+          <div class="field half">
+            <label for="email">Email</label
+            ><input id="email" type="text" name="email" />
+          </div>
+          <div class="field">
+            <label for="message">Message</label
+            ><textarea id="message" name="message" rows="6"></textarea>
+          </div>
+          <ul class="actions">
+            <li></li>
+            <input class="alt" type="submit" value="Send Message" />
+          </ul>
+        </form>
+        <div class="copyright">&copy; Untitled Design:</div>
+        <a href="https://templated.co/">TEMPLATED</a>. Images
+        <a href="https://unsplash.com/">Unsplash</a>
+      </div>
+    </section>
+    <script src="/js/bundle.js"></script>
+  </body>
+</html>
