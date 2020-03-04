@@ -5,11 +5,28 @@
   align-items: center;
 }
 
-/* Home page */
-
-.listing-container {
-  width: 50em;
+/* Header */
+#nav {
+  display: inline-flex;
+  align-items: center;
 }
+
+.nav__el {
+  display: inline-flex !important;
+  align-items: center;
+}
+
+.nav__user-img {
+  height: 3em;
+  width: 3em;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
+/* Home page */
 
 input[type='text']:focus,
 input[type='password']:focus,
@@ -20,7 +37,11 @@ textarea:focus {
   box-shadow: none;
 }
 
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
 /* Login Pages */
+
 .form__group {
   margin: 1em 0;
 }
@@ -34,6 +55,13 @@ textarea:focus {
 }
 
 /* Listings */
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
+
+.listing-container {
+  width: 50em;
+}
 
 .offers {
   max-width: 100%;
@@ -50,6 +78,7 @@ textarea:focus {
   grid-template-rows: 45% 35% 20%;
   grid-template-columns: 55% 45%;
   grid-template-areas: 'creator-info description more-info' 'date-location description more-info' 'setting description more-info';
+  margin-bottom: 40px;
 }
 
 .listing-container:hover {
@@ -159,12 +188,13 @@ textarea:focus {
     max-width: 100%;
   }
   .listing-container {
-    grid-template-rows: 40% 40% 10% 10%;
+    grid-template-rows: 37.5% 30% 15% 7.5% 10%;
     grid-template-columns: 100%;
     grid-template-areas:
       'creator-info'
       'description'
       'date-location'
+      'setting'
       'more-info';
     height: 70vh;
     max-width: 100%;
@@ -189,7 +219,97 @@ textarea:focus {
     font-size: 12px;
   }
 
+  .setting {
+    font-size: 12px;
+    align-items: flex-end;
+  }
+  .setting a {
+    margin-bottom: 0.7em;
+  }
   .description-text {
     font-size: 16px;
   }
+}
+
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
+/* ////////////////////////////////////// */
+/* My account page */
+.user {
+  padding: 6rem 6rem;
+}
+.user-view {
+  display: flex;
+}
+
+.user-view__menu {
+  flex: 30;
+  padding-right: 4em;
+  padding-top: 3em;
+  background-color: #e5474b;
+}
+.user-view__menu ul {
+  list-style: none;
+  margin-left: 1em;
+}
+
+.user-view__menu li {
+  margin: 1.5em 0;
+}
+.user-view__menu a {
+  color: #fff;
+  text-transform: uppercase;
+  justify-content: left;
+}
+.user-view__menu svg {
+  margin-right: 1.5em;
+}
+
+.admin-nav__heading {
+  margin: 0 0 1em 2.5em;
+  padding-bottom: 3px;
+  text-transform: uppercase;
+  color: #f2f2f2;
+  border-bottom: 1px solid currentColor;
+}
+
+.user-view__content {
+  flex: 65;
+  padding: 2em 8em 2em 8em;
+}
+
+.side-nav svg {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+.form__user-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50px;
+  margin-right: 1.5em;
+}
+.form__upload {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.form__photo-upload {
+  justify-content: left;
+  margin-top: 2em;
+}
+
+.form__upload + label {
+  color: #e5474b;
+  display: inline-block;
+  text-decoration: none;
+  border-bottom: 1px solid #e5474b;
+  padding: 3px;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
 }

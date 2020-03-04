@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'default.jpg'
   },
+  photo72x72: {
+    type: String,
+    default: 'default-72x72.jpg'
+  },
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],

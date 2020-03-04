@@ -1,9 +1,18 @@
 header#header
   .inner
-    a.logo(href='/home') Student based meal trade
+    a.logo(href='/') Student based meal trade
     nav#nav
-      a(href='/home') Home
+      a(href='/') Home
       a(href='#') Generic
-      a(href='#') Elements
+      if user
+        a.nav__el.nav__el--logout Log out
+        a.nav__el(href='/me')
+          img.nav__user-img(src=`/img/users/${user.photo}` alt=`Photo of ${user.name}`)
+          span= user.name.split(' ')[0]
+      else
+        a.nav__el(href='/login') Login
+        a.nav__el.nav__el-cta(href='/signup') Signup
 a.navPanelToggle(href='#menu')
   span.fa.fa-bars
+
+        

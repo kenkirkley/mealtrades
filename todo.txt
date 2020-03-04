@@ -4,62 +4,52 @@ Goals:
 2. Finish consumer/creator interactions through sms.
 
 Next: See Front End.
+Watch the end of the node course for deployment.
 
+Things to look out for:
+Changed the overview in views controller. the / route just goes to home page.
 
-Thoughts:
+WHEN USER UPDATES INFO, THEIR INFO IS NOT UPDATED ON ANY ACTIVE OFFERS THEY HAVE!!!!
 
-Do we need any verfication for users at all? Verification adds quite a few hurdles and swamps of both legal and structrual nature. From what i've looked up so far, there is no way to get access to the complete school directory. Scraping the search function probably would not work either, as to get someone's info you need their name in the search bar. I dont think we can scrape this.
-
-So maybe we go the leafedin route. Just make it anonymous, maybe require a tamu specific email, and leave the masses to it. Have meal trade meetups or exchanges. People can leave their venmos, and say venmo someone to get them a meal trade for $5 dollars or something like that. Or just give them away for free by saying ima be here at a certain time. That kind of thing. I think the UIN/Student ID route is not feasible.
-
-For now just put the signup requirements on hold. Probably wont use them. Look in to how to verify a certain domain. Could use regular expressions.
--------------------------------------------------
--------------------------------------------------
-
-Remember to change the Nexmo Webhook to the current ngrok web link. Dont need to do this if we are not recieving messages.
-
-Ways to decrease cost:
-1. Use confirmation link instead of response text. This will allow you to have direct access to offer by putting offer id into the confirmation link parameter. Also saves one inbound sms message. (25%)
-2. Only send contact info to one party. This will save one outgoing message. Instead of sending both parties the numbers, only one party will get it. Or, have the contact info in the link?
-
-On offer creation, have an option to eat together or eat separately?
-Users need bios, as in confirmation link it will show some user info.
-
-See if you can redirect to the a&m portal for UIN authentication?? or just student authentication.
+Question of the day: Do we make them fill in bio/images/about me/tagline on signup, or sign them up first then ask them to update their information?
 
 TODO:
 -------------------------------------------------
 
-
-Git was used yesterday. Kinda fucked things up. See if anything is broken.
-
 Front End:
 Status: In progress
 Todo: PRIORITY 1!!!!!!!!!!! Create schematic of website to take inventory of all front end pages required. Handle errors in a way that is suitable for deployment. (404, etc)
-Mock up the listing box
+Put if statement, if there are no offers currently, replace offers div with some text.
+Before processing images, create the user page and the single listing page/lightbox. These pages will have a picture of the user.
+Need to process images with multer in a way that matches our layout.
+Multer operations need to be used on signup if the user uploads an image, and on update. Currently it is only on update. 
+-------------------------------------------
+
+-------------------------------------------
+
 -------------------------------------------------
 COMPLETED:
 
 REVIEW:
 home (Current home page can be about page.)
 footer
-header
+header (user drop down menu)
 login
 forgotPassword
 emailSent
 resetPassword
 error
-
-
+Listing on home page
+Listing mixin
+my account page (when uploading photo, need some indication of file)
 
 
 NOT STARTED:
 
-Listing on home page
-Listing mixin
 Single listing(lightbox)
-Signup page 2 with user info
-my account page
+Signup page 2 with user info?? See question of the day.
+Map of local listings page.
+
 user page
 about page
 privacy and terms of conditions
@@ -71,7 +61,7 @@ Consumption confirmation page
 
 Signup:
 Status: Basic 
-Todo: needs specific functionality
+Todo: needs specific functionality, need to be able to check for a valid tamu email.
 -----------------------------------------------
 Make a signup page and make it work. Things to check:
 
@@ -86,6 +76,7 @@ Forgot Password:
 Status: Mvp
 Todo: Make more front end designs for error states. Streamline user exp. by taking them to the appropriate pages.
 Make a page to send them to after they click the forgot password button.
+EMAIL WILL ONLY SEND IN PRODUCTION
 -------------------------------------------------
 Make a forgot password link
 Done, but:
@@ -120,24 +111,7 @@ ADD CONSUMER TO OFFER!!!!!
 4. What happens if two consumers consume at the same time?
     a. While there is a consumer on the offer, do not show the offer. Once the creator denies, take creator off of the offer. This will allow the offer to show back up on the front end. If the creator accepts, then there will still be a consumer on the offer, therefore it will not show up on the front end.
 
-
-TO TEST RECIEVING SMS:
-1. Install ngrok so that nexmo can detect the endpoint for recieving SMS
-2. configure your virtual number. Add the endpoint that you want the messages to be handled on.
-3. use code snippet provided on https://developer.nexmo.com/messaging/sms/code-snippets/receiving-an-sms. make a route that matches the endpoint on the virtual number, then make a controller function that handles what to do with that message.
-4. When recieving the message, send short acknowledgement reply, then send message to the person who consumed the offer saying whether or not they accepted. 
-a. Test the response. In message, say "Respond Yes to accept, or No to deny." use an if statement with the text of the message to see what they said. If neither, send a message that says only reply yes or no.
-b. If yes, set message contents to x. If no, set message contents to y.
-c. With these message contents, send message to the consumer with the appropriate response.
-
-
-d. (OPTIONAL). Turn to conversation mode and connect users. Any further replies will be sent back and forth between users. May need a new endpoint for this? or instead, separate the initial interaction into one function, and the subsequent interactions into another. Or, at this point, connect the users by exchanging the numbers? or emails. 
-
-This is the connection point between users.
-This will require more thought.
 -------------------------------------------------
--------------------------------------------------
-
 
 Single Offer page
 Status: Api functional
@@ -190,3 +164,64 @@ dashboard.nexmo.com/test-numbers
 look into conversations on nexmo for handling user communication.
 -------------------------------------------------
 -------------------------------------------------
+
+TO TEST RECIEVING SMS:
+1. Install ngrok so that nexmo can detect the endpoint for recieving SMS
+2. configure your virtual number. Add the endpoint that you want the messages to be handled on.
+3. use code snippet provided on https://developer.nexmo.com/messaging/sms/code-snippets/receiving-an-sms. make a route that matches the endpoint on the virtual number, then make a controller function that handles what to do with that message.
+4. When recieving the message, send short acknowledgement reply, then send message to the person who consumed the offer saying whether or not they accepted. 
+a. Test the response. In message, say "Respond Yes to accept, or No to deny." use an if statement with the text of the message to see what they said. If neither, send a message that says only reply yes or no.
+b. If yes, set message contents to x. If no, set message contents to y.
+c. With these message contents, send message to the consumer with the appropriate response.
+
+
+d. (OPTIONAL). Turn to conversation mode and connect users. Any further replies will be sent back and forth between users. May need a new endpoint for this? or instead, separate the initial interaction into one function, and the subsequent interactions into another. Or, at this point, connect the users by exchanging the numbers? or emails. 
+
+This is the connection point between users.
+This will require more thought.
+-------------------------------------------------
+-------------------------------------------------
+
+MULTER USAGE GUIDE AND THOUGHTS:
+Pressing Thought: If we save a smaller, resized image that is more optimized, loading that image makes the image look blurrier as opposed to loading a higher res image then sizing it down.
+Higher res is less optimal for web, but it looks better. Resized is more optimal, but looks shitty. What do?
+
+Need to process images with multer in a way that matches our layout.
+Multer operations need to be used on signup if the user uploads an image, and on update. Currently it is only on update. 
+The photo is added to the user by uploading a photo, creating a file name for that photo, attaching the file name to the request, then when the updateMe function is called, it assigns the photo field of the user to the file name in the request.
+
+
+When you decide what sizes are needed for the front end, adjust the multer functions in user controller accordingly. Right now, the sizes are 500x500 and 72x72. 
+How to use the photos:
+The base filename is stored in the photo attribute of the user. When the base size (currently 500x500) is needed, just access the photo attribute. When other sizes are needed, add the size extension to the name of the file(ie. filename-72x72.jpeg). The other sizes are saved, but the direct reference to the names of these files are not saved. But the base filename of these photos are the same of the original photo.
+
+-------
+The current implementation has 2 middleware functions that use multer. If you change the photo in the user model to an array, then pass an array of strings through the request with filenames, then maybe you can just use one multer middleware instead of two identical ones. Not good to have duplicate code. Or you can take another argument in the middleware on the size of photo desired. Then, change front end to load the 72x72 image with the new nomenclature.
+
+Saving one photo name is not bad, but the same function is defined twice as it stands, one for the normal size and a modified one for the other sizes. There is lots of duplicate code here. Mark for refactor.
+-------
+As of right now, the base filename gets saved to the photo attribute on a user, but multiple photos get saved using multiple functions. Whenever a certain size of photo is desired, the size extension should be added to the name of the photo before insertion on the front end.
+
+
+--------------------------------------------------------------------------------------------------
+
+Other thoughts:
+
+Do we need any verfication for users at all? Verification adds quite a few hurdles and swamps of both legal and structrual nature. From what i've looked up so far, there is no way to get access to the complete school directory. Scraping the search function probably would not work either, as to get someone's info you need their name in the search bar. I dont think we can scrape this.
+
+So maybe we go the leafedin route. Just make it anonymous, maybe require a tamu specific email, and leave the masses to it. Have meal trade meetups or exchanges. People can leave their venmos, and say venmo someone to get them a meal trade for $5 dollars or something like that. Or just give them away for free by saying ima be here at a certain time. That kind of thing. I think the UIN/Student ID route is not feasible.
+
+For now just put the signup requirements on hold. Probably wont use them. Look in to how to verify a certain domain. Could use regular expressions.
+-------------------------------------------------
+-------------------------------------------------
+
+Remember to change the Nexmo Webhook to the current ngrok web link. Dont need to do this if we are not recieving messages.
+
+Ways to decrease cost:
+1. Use confirmation link instead of response text. This will allow you to have direct access to offer by putting offer id into the confirmation link parameter. Also saves one inbound sms message. (25%)
+2. Only send contact info to one party. This will save one outgoing message. Instead of sending both parties the numbers, only one party will get it. Or, have the contact info in the link?
+
+On offer creation, have an option to eat together or eat separately?
+Users need bios, as in confirmation link it will show some user info.
+
+See if you can redirect to the a&m portal for UIN authentication?? or just student authentication.

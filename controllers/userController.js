@@ -47,11 +47,32 @@ exports.resizeUserPhoto = (req, res, next) => {
   // jpeg turns it to jpeg
   // to file needs the destination
   sharp(req.file.buffer)
+    // Listing image at 72x72, other images at ___
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
     .toFile(`public/img/users/${req.file.filename}`);
 
+  next();
+};
+exports.resizeUserPhoto72x72 = (req, res, next) => {
+  if (!req.file) {
+    return next();
+  }
+
+  const filename72x72 = `${req.file.filename.replace('.jpeg', '')}-72x72.jpeg`;
+
+  // buffer: file stored in memory, not to disk
+  // resize: resize(width: height: options)
+  // look at sharp documentation for options
+  // jpeg turns it to jpeg
+  // to file needs the destination
+  sharp(req.file.buffer)
+    // Listing image at 72x72, other images at ___
+    .resize(72, 72)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/users/${filename72x72}`);
   next();
 };
 
@@ -84,6 +105,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   // if the request has a file (photo), update the photo
   if (req.file) {
     filteredBody.photo = req.file.filename;
+    filteredBody.photo72x72 = `${req.file.filename.replace(
+      '.jpeg',
+      ''
+    )}-72x72.jpeg`;
   }
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,

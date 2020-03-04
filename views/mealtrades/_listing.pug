@@ -1,8 +1,22 @@
 mixin listing(offer)
-    .wrapper
-        p.creator= offer.creator[0].name
-        p.location= offer.location
-        - let date = new Date(offer.time);
-        - date = date.toLocaleDateString("en-US", {weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})
-        p.time= date
-        p.description= offer.description
+    .listing-container
+        .creator-info.flex-centered-mobile
+            // add a part of the bio that is like a tag line, like a short tinder bio, then show it under the creator in the offer?
+            .img-wrapper
+                img.avatar(src=`../img/users/${offer.creator[0].photo}` alt='')
+            .name-wrapper
+                p.name= offer.creator[0].name
+                span.tagline Freshman
+        .description.flex-centered
+            p.description-text= `"${offer.description}"`
+        .date-location.flex-centered
+            p= `${offer.location} ${offer.time.toLocaleDateString("en-US", {weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}`
+                // <button class="more-info">More Info</button>
+        .setting.flex-centered
+            a(href='#')
+                | See it on a map 
+                i.fa.fa-caret-right
+        //- This needs to be a button
+        .more-info.flex-centered
+            i.fa.fa-caret-right.display-desktop
+            i.fa.fa-caret-down.display-mobile

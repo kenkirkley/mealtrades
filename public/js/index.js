@@ -33,7 +33,6 @@ if (signupForm) {
     signup(name, email, password, passwordConfirm);
   });
 }
-
 if (loginForm) {
   loginForm.addEventListener('submit', e => {
     e.preventDefault();
