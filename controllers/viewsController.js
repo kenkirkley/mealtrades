@@ -43,6 +43,32 @@ exports.getOverview = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getListing = catchAsync(async (req, res, next) => {
+  // 1. Get tour data from collection
+  try {
+    const offer = await Offer.findById(req.params.offerid);
+    // if id is in proper format, but is invalid
+    if (!offer) {
+      return next(
+        new AppError(
+          'The listing is no longer valid or could not be found.',
+          404
+        )
+      );
+    }
+
+    res.status(200).render('singlelisting', {
+      title: 'Listing',
+      offer
+    });
+  } catch (err) {
+    // if id is in incorrect format
+    return next(
+      new AppError('The listing is no longer valid or could not be found.', 404)
+    );
+  }
+});
+
 exports.getLoginForm = (req, res, next) => {
   res.status(200).render('login', {
     title: 'Log into your account'
@@ -97,4 +123,13 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
     title: 'Your account',
     user: updatedUser
   });
+});
+
+exports.confirmOffer = catchAsync(async (req, res, next) => {
+  // need to make a confirmation page for the offer
+  const offer = Offer.findById(req.params.offerid);
+  const consumer = User.findById(req.params.consumerid);
+
+  // show offer and consumer info. Also need button to confirm or deny
+  // render pug template, pass in offer and consumer
 });

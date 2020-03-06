@@ -15,8 +15,14 @@ router
   .patch(authController.protect, offerController.updateOffer)
   .delete(authController.protect, offerController.deleteOffer);
 
+// This used to be get. if any problems
 router
   .route('/:id/consume')
-  .get(authController.protect, offerController.consumeOffer);
+  .post(authController.protect, offerController.consumeOffer);
+
+// USE THIS IN THE AXIOS REQUEST WHEN THE ACCEPT BUTTON IS PRESSED
+router
+  .route('/confirm/offer/:offerid/consumer/:consumerid/accept/:confirmation')
+  .post(authController.protect, offerController.confirmOffer);
 
 module.exports = router;

@@ -6,15 +6,57 @@ Goals:
 Next: See Front End.
 Watch the end of the node course for deployment.
 
+make single listing page.
+
+Consumption: Need to make a front end confirmation page with accept or deny buttons that will send differing post requests depending on accept or deny. Use different axios requests with the last accept parameter to confirm/deny.
+Need to hide listing when someone shows interest? or leave it up and let multiple people show interest? if latter, then will have to notify other interested parties when a post is no longer available? or just leave them hanging. keep text price in mind. Gonna need a bigger picture.
+
 Things to look out for:
 Changed the overview in views controller. the / route just goes to home page.
 
 WHEN USER UPDATES INFO, THEIR INFO IS NOT UPDATED ON ANY ACTIVE OFFERS THEY HAVE!!!!
 
 Question of the day: Do we make them fill in bio/images/about me/tagline on signup, or sign them up first then ask them to update their information?
-
+Other question: Do we send phonenumbers? and who to?
+-------------------------------------------------
 TODO:
 -------------------------------------------------
+
+Post Consumption:
+Status: In progress
+Todo:  Add consumer to offer when consumed. Create confirmation link with offer and consumer as params. Create link in consumeOffer. Will need to make a route for this. Page will have consumer info with confirm or deny buttons. Create confirmation link route.
+-------------------------------------------------
+CREATE A NEW ROUTE FOR POST CONSUMPTION:
+2. Send confirmation request to creator
+3. Send notice to user of result
+4. Connect users (send respective contact info)
+
+Flow:
+1. Post consume request
+    a. Message sent to creator with confirmation link. Link will have consumer info with buttons to confirm or deny.(offerController.consumeOffer) 
+    b. Show on front end: A message has been sent to $CREATOR. You will be notified of their response shortly
+    c. Creator clicks button on link (link needs to include the offer id)
+    d. Send appropriate message to consumer. (This happens on a new route!)
+    e. link two parties.
+
+
+ADD CONSUMER TO OFFER!!!!!
+1. When consumer consumes offer, send messages confirming. Consumer is added to offer.
+3. If there is a consumer on the offer, take the listed offer off of the site. if consumer, do not show on front end. 
+4. What happens if two consumers consume at the same time?
+    a. While there is a consumer on the offer, do not show the offer. Once the creator denies, take creator off of the offer. This will allow the offer to show back up on the front end. If the creator accepts, then there will still be a consumer on the offer, therefore it will not show up on the front end.
+
+-------------------------------------------------
+-------------------------------------------------
+
+Single Offer page
+Status: Api functional
+Todo: Create Front End for single offer. Must have consumer attach functionality on front end.
+-------------------------------------------------
+Review api functionality. Need to attach consumer to offer. Send consumer with axios request. Handle on backend. Remap it out so you understand. If creator clicks offer, then it should take to edit offer page.
+-------------------------------------------------
+-------------------------------------------------
+
 
 Front End:
 Status: In progress
@@ -23,10 +65,6 @@ Put if statement, if there are no offers currently, replace offers div with some
 Before processing images, create the user page and the single listing page/lightbox. These pages will have a picture of the user.
 Need to process images with multer in a way that matches our layout.
 Multer operations need to be used on signup if the user uploads an image, and on update. Currently it is only on update. 
--------------------------------------------
-
--------------------------------------------
-
 -------------------------------------------------
 COMPLETED:
 
@@ -47,6 +85,7 @@ my account page (when uploading photo, need some indication of file)
 NOT STARTED:
 
 Single listing(lightbox)
+Consumption confirmation page (similar format to one above.)
 Signup page 2 with user info?? See question of the day.
 Map of local listings page.
 
@@ -54,7 +93,7 @@ user page
 about page
 privacy and terms of conditions
 contact
-Consumption confirmation page
+
 
 ------------------------------------------------
 ------------------------------------------------
@@ -83,41 +122,6 @@ Done, but:
 1. FIND A BETTER WAY TO GET THE TOKEN FROM THE URL TO THE AXIOS REQUEST. As of right now, the token is being passed to the pug template from the back end, then the token is attached to the button id, then that id is sent to the axios request. How to get the token straight from the url?????
 2. This will not log in immediately in testing, as testing locally is not done over https.
 3. Make pages for error states. If token is invalid or expired, send back to forgot password? or something. as of right now, there are only push notifications.
--------------------------------------------------
--------------------------------------------------
-
-
-Post Consumption:
-Status: In progress
-Todo:  Add consumer to offer when consumed. Create confirmation link with offer and consumer as params. Create link in consumeOffer. Will need to make a route for this. Page will have consumer info with confirm or deny buttons. Create confirmation link route.
--------------------------------------------------
-CREATE A NEW ROUTE FOR POST CONSUMPTION:
-2. Send confirmation request to creator
-3. Send notice to user of result
-4. Connect users (send respective contact info)
-
-Flow:
-1. Post consume request
-    a. Message sent to creator with confirmation link. Link will have consumer info with buttons to confirm or deny.(offerController.consumeOffer) 
-    b. Show on front end: A message has been sent to $CREATOR. You will be notified of their response shortly
-    c. Creator clicks button on link (link needs to include the offer id)
-    d. Send appropriate message to consumer. (This happens on a new route!)
-    e. link two parties.
-
-
-ADD CONSUMER TO OFFER!!!!!
-1. When consumer consumes offer, send messages confirming. Consumer is added to offer.
-3. If there is a consumer on the offer, take the listed offer off of the site. if consumer, do not show on front end. 
-4. What happens if two consumers consume at the same time?
-    a. While there is a consumer on the offer, do not show the offer. Once the creator denies, take creator off of the offer. This will allow the offer to show back up on the front end. If the creator accepts, then there will still be a consumer on the offer, therefore it will not show up on the front end.
-
--------------------------------------------------
-
-Single Offer page
-Status: Api functional
-Todo: Create Front End for single offer. Must have consumer attach functionality on front end.
--------------------------------------------------
-Review api functionality. Need to attach consumer to offer. Send consumer with axios request. Handle on backend. Remap it out so you understand
 -------------------------------------------------
 -------------------------------------------------
 

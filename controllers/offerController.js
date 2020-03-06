@@ -32,7 +32,6 @@ exports.consumeOffer = catchAsync(async (req, res, next) => {
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // Separate sending message into message creator
-  const to = creator.phoneNumber;
 
   // Need to make a confirmation link with the offer and consumer as params. Create the link, then pass it to the send message function in message controller.
   // ${req.protocol}://${req.get('host')}/offers/confirm/offer/:offerid/consumer/:consumer
@@ -41,9 +40,11 @@ exports.consumeOffer = catchAsync(async (req, res, next) => {
 
   // desired text message content
   // text = Somebody has expressed interest in your offer! Click this link to see who it is and confirm/deny their request
-  const text = 'test message dank.';
 
-  await messageController.sendText(to, text);
+  await messageController.sendText(
+    creator.phoneNumber,
+    'Somebody has expressed interest in your offer! Click this link to see who it is and confirm/deny their request.'
+  );
 
   // 4) When creator clicks link, notify user of confirmation/deny. Need new route
   res.status(200).json({
@@ -53,5 +54,35 @@ exports.consumeOffer = catchAsync(async (req, res, next) => {
       data: doc,
       creator
     }
+  });
+});
+
+exports.confirmOffer = catchAsync(async (req, res, next) => {
+  const offer = await Offer.findById(req.params.offerid);
+  const consumer = await User.findById(req.params.consumerid);
+
+  if (!offer || !consumer) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  // This method happens when the creator accepts the consumption request. Upon doing so, the creator's phone number will be given to the consumer.
+
+  // if statement: if accept, send one text, if deny, send another. To track answer, add another parameter accept with accept or deny fields. Or just two different routes.
+  if (req.params.confirmation === 'confirm') {
+    await messageController.sendText(
+      consumer.phoneNumber,
+      `${offer.creator[0].name} has accepted your request! You can get in contact with them at this phone number: ${offer.creator[0].phoneNumber}`
+    );
+  } else {
+    await messageController.sendText(
+      consumer.phoneNumber,
+      `${offer.creator[0].name} is not able to fulfil your request. You can look for more listings on our main page.`
+    );
+  }
+
+  res.status(200).json({
+    // JSend specs
+    status: 'Sucess',
+    data: {}
   });
 });
